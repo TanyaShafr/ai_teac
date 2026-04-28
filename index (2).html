@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI-помощник учителя · Промпты, конструктор, сценарии</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5efe4;
+  --bg-2: #ebe2d0;
+  --paper: #faf6ec;
+  --ink: #1a1612;
+  --ink-soft: #4a4239;
+  --ink-mute: #7a6f60;
+  --line: #d9cdb6;
+  --line-soft: #e8ddc6;
+  --accent: #c2410c;
+  --accent-2: #92400e;
+  --accent-soft: #fde68a;
+  --green: #4d7c0f;
+  --blue: #1e40af;
+  --rose: #be123c;
+  --teal: #0f766e;
+  --shadow: 0 1px 0 rgba(26, 22, 18, 0.04), 0 8px 24px -12px rgba(26, 22, 18, 0.18);
+  --shadow-lg: 0 2px 0 rgba(26, 22, 18, 0.06), 0 24px 48px -16px rgba(26, 22, 18, 0.22);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(194, 65, 12, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(15, 118, 110, 0.04) 0%, transparent 40%);
+}
+
+::selection { background: var(--accent); color: var(--paper); }
+
+/* ============== HEADER ============== */
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: rgba(245, 239, 228, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 20px;
+  font-style: italic;
+  border-radius: 4px;
+  position: relative;
+}
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  inset: -3px -3px auto auto;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.brand-text {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+.brand-text em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-mute);
+}
+nav.main-nav {
+  display: flex;
+  gap: 4px;
+}
+nav.main-nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+nav.main-nav a:hover {
+  background: var(--bg-2);
+  color: var(--ink);
+}
+
+/* ============== HERO ============== */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px 60px;
+  position: relative;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  align-items: end;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+  margin-bottom: 28px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--ink-mute);
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 32px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 400;
+}
+.hero h1 .underline {
+  position: relative;
+  display: inline-block;
+}
+.hero h1 .underline::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--accent-soft);
+  z-index: -1;
+}
+.hero-lead {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 580px;
+  margin-bottom: 36px;
+}
+.hero-cta-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 8px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: none;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+.btn-outline {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-outline:hover {
+  border-color: var(--ink);
+  background: var(--bg-2);
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.stat {
+  padding: 28px 24px;
+  border-right: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+.stat:nth-child(2n) { border-right: none; }
+.stat:nth-last-child(-n+2) { border-bottom: none; }
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.stat-num em {
+  font-style: italic;
+  color: var(--accent);
+}
+.stat-label {
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ============== SECTION TEMPLATE ============== */
+section.block {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px;
+}
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 44px;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.section-head-left {
+  max-width: 720px;
+}
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-tag::before {
+  content: '§';
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-style: italic;
+}
+.section-head h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+.section-head h2 em { font-style: italic; color: var(--accent); }
+.section-head p {
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ============== CONSTRUCTOR ============== */
+.constructor {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.constructor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  min-height: 600px;
+}
+.constructor-controls {
+  padding: 36px;
+  border-right: 1px solid var(--line);
+  background: var(--paper);
+}
+.control-group {
+  margin-bottom: 28px;
+}
+.control-label {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.control-label .num {
+  width: 20px;
+  height: 20px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: 24px;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--ink-soft);
+  font-family: 'Manrope', sans-serif;
+}
+.chip:hover { border-color: var(--ink); color: var(--ink); }
+.chip.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.input-field, .select-field, .textarea-field {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  transition: border-color 0.15s;
+}
+.input-field:focus, .select-field:focus, .textarea-field:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: var(--paper);
+}
+.textarea-field {
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Manrope', sans-serif;
+}
+.constructor-output {
+  background: #1a1612;
+  background-image:
+    linear-gradient(135deg, #1a1612 0%, #2a221b 100%);
+  color: #f5efe4;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+}
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(245, 239, 228, 0.12);
+}
+.output-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(245, 239, 228, 0.6);
+}
+.output-title::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 8px #4ade80;
+}
+.copy-btn {
+  background: rgba(245, 239, 228, 0.08);
+  border: 1px solid rgba(245, 239, 228, 0.15);
+  color: #f5efe4;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.copy-btn:hover { background: rgba(245, 239, 228, 0.15); }
+.copy-btn.copied {
+  background: #4ade80;
+  color: #1a1612;
+  border-color: #4ade80;
+}
+.output-content {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  flex: 1;
+  color: #f5efe4;
+  letter-spacing: -0.01em;
+}
+.output-content .highlight { color: #fbbf24; }
+.output-content .var { color: #f97316; font-style: italic; }
+.output-meta {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(245, 239, 228, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: rgba(245, 239, 228, 0.5);
+  font-family: 'JetBrains Mono', monospace;
+}
+.output-meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ============== SCENARIOS ============== */
+.scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+.scenario-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.scenario-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.25s ease;
+}
+.scenario-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ink);
+}
+.scenario-card:hover::before { transform: scaleY(1); }
+.scenario-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--bg);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+}
+.scenario-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.scenario-card h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.scenario-card p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+.scenario-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+}
+.scenario-action::after {
+  content: '→';
+  transition: transform 0.2s;
+}
+.scenario-card:hover .scenario-action::after {
+  transform: translateX(4px);
+}
+
+/* ============== LIBRARY ============== */
+.library-toolbar {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.search-wrap {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+.search-wrap::before {
+  content: '⌕';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--ink-mute);
+}
+.search-input {
+  width: 100%;
+  padding: 11px 16px 11px 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14.5px;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--ink);
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: var(--paper);
+}
+.filter-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-pill {
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition: all 0.15s;
+}
+.filter-pill:hover { border-color: var(--ink-soft); }
+.filter-pill.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.results-info {
+  font-size: 13px;
+  color: var(--ink-mute);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 16px;
+}
+.prompts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 18px;
+}
+.prompt-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.prompt-card:hover {
+  border-color: var(--ink-soft);
+  box-shadow: var(--shadow);
+}
+.prompt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+.prompt-cat {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.fav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-mute);
+  font-size: 18px;
+  padding: 0;
+  transition: color 0.15s, transform 0.15s;
+  line-height: 1;
+}
+.fav-btn:hover { color: var(--accent); transform: scale(1.15); }
+.fav-btn.active { color: var(--accent); }
+.prompt-card h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.prompt-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 14px;
+  flex: 1;
+  white-space: pre-wrap;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.prompt-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.prompt-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  background: var(--bg-2);
+  border-radius: 12px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.tag-tech {
+  background: var(--accent-soft);
+  color: var(--accent-2);
+}
+.copy-mini {
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.15s;
+}
+.copy-mini:hover { background: var(--accent); }
+.copy-mini.copied { background: var(--green); }
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--ink-mute);
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+}
+.empty-state strong {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ============== TECHNIQUES ============== */
+.technique-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.technique-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 32px;
+  position: relative;
+}
+.technique-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: -0.04em;
+}
+.technique-card h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.technique-card p {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.compare-block {
+  border-top: 1px dashed var(--line);
+  padding-top: 16px;
+  margin-top: 18px;
+}
+.compare-row {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+.compare-row .label {
+  font-weight: 600;
+  flex-shrink: 0;
+  width: 20px;
+}
+.compare-row.bad .label { color: var(--rose); }
+.compare-row.good .label { color: var(--green); }
+.compare-row .text { color: var(--ink-soft); }
+
+/* ============== TOOLS COMPARE ============== */
+.tools-table {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.tools-table-header, .tools-table-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+  gap: 1px;
+  background: var(--line-soft);
+}
+.tools-table-header > div {
+  background: var(--bg-2);
+  padding: 18px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+.tools-table-row > div {
+  background: var(--paper);
+  padding: 18px 20px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.tools-table-row .feature {
+  font-weight: 600;
+  color: var(--ink);
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+}
+.rating {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+.dot.filled { background: var(--accent); }
+.tool-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.tool-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--paper);
+}
+.tool-icon.gpt { background: #10a37f; }
+.tool-icon.claude { background: #c2410c; }
+.tool-icon.gemini { background: #1e40af; }
+.tool-icon.deepseek { background: #4338ca; }
+
+/* ============== CHECKLISTS ============== */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.checklist-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 32px;
+}
+.checklist-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.checklist-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent-soft);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+.checklist-card h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.checklist-card .subtitle {
+  font-size: 13px;
+  color: var(--ink-mute);
+  font-family: 'JetBrains Mono', monospace;
+}
+.checklist-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.check-item {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.check-item:hover { background: var(--bg); }
+.check-box {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--line);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  transition: all 0.15s;
+}
+.check-item.done .check-box {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.check-item.done .check-box::after {
+  content: '✓';
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
+}
+.check-item.done .check-text {
+  text-decoration: line-through;
+  color: var(--ink-mute);
+}
+.check-text {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  flex: 1;
+}
+.check-text strong { color: var(--ink); font-weight: 600; }
+
+/* ============== CTA STRIP ============== */
+.cta-strip {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 64px 32px;
+  margin: 60px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.cta-strip::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.25;
+  pointer-events: none;
+}
+.cta-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+}
+.cta-inner h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+}
+.cta-inner h2 em { color: var(--accent-soft); font-style: italic; }
+.cta-btn {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 16px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.cta-btn:hover {
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+/* ============== FOOTER ============== */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 40px 32px;
+  background: var(--bg-2);
+}
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--ink-mute);
+}
+.footer-inner em { color: var(--accent); font-style: italic; }
+
+/* ============== MODAL ============== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 22, 18, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--paper);
+  border-radius: 16px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-header {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 20px;
+}
+.modal-header h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.modal-header .modal-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+}
+.modal-close {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.modal-close:hover { background: var(--ink); color: var(--paper); }
+.modal-body {
+  padding: 28px 32px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal-body p {
+  color: var(--ink-soft);
+  font-size: 15px;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+.modal-prompt {
+  background: #1a1612;
+  color: #f5efe4;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 22px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  margin-bottom: 16px;
+}
+.modal-prompt .var { color: #f97316; font-style: italic; }
+.modal-prompt .highlight { color: #fbbf24; }
+.modal-tip {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--accent-2);
+  line-height: 1.55;
+}
+.modal-tip strong { font-weight: 700; }
+.modal-footer {
+  padding: 20px 32px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ============== TOAST ============== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 300;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-lg);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast::before {
+  content: '✓';
+  color: #4ade80;
+  font-weight: 700;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .constructor-grid { grid-template-columns: 1fr; }
+  .constructor-controls { border-right: none; border-bottom: 1px solid var(--line); }
+  .technique-row { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .tools-table-header, .tools-table-row {
+    grid-template-columns: 1fr 1fr;
+    font-size: 13px;
+  }
+  .cta-inner { grid-template-columns: 1fr; }
+  nav.main-nav { display: none; }
+}
+@media (max-width: 640px) {
+  .header-inner, .hero, section.block { padding-left: 20px; padding-right: 20px; }
+  .hero { padding-top: 50px; padding-bottom: 40px; }
+  section.block { padding-top: 56px; padding-bottom: 56px; }
+  .hero-stats { grid-template-columns: 1fr; }
+  .stat { border-right: none !important; }
+  .stat:last-child { border-bottom: none; }
+  .constructor-controls, .constructor-output { padding: 24px; }
+  .scenario-card, .technique-card, .checklist-card { padding: 22px; }
+  .tools-table-header, .tools-table-row { grid-template-columns: 1fr; }
+  .tools-table-row .feature { background: var(--bg-2) !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="javascript:void(0)" class="brand" data-scroll="top">
+      <div class="brand-mark">P</div>
+      <div class="brand-text">Promptura<em> · для учителей</em></div>
+    </a>
+    <nav class="main-nav">
+      <a href="javascript:void(0)" data-scroll="constructor">Конструктор</a>
+      <a href="javascript:void(0)" data-scroll="scenarios">Сценарии</a>
+      <a href="javascript:void(0)" data-scroll="library">Библиотека</a>
+      <a href="javascript:void(0)" data-scroll="techniques">Техники</a>
+      <a href="javascript:void(0)" data-scroll="tools">Инструменты</a>
+      <a href="javascript:void(0)" data-scroll="checklists">Чек-листы</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <h1>
+        ИИ становится<br>
+        <em>полезным помощником</em><br>
+        когда вы знаете <span class="underline">что спросить</span>.
+      </h1>
+      <p class="hero-lead">
+        Не очередной список промптов. Это рабочий инструмент: соберите промпт под свою задачу за 30 секунд, найдите готовое решение для типичной проблемы, или используйте чек-лист, чтобы ничего не забыть.
+      </p>
+      <div class="hero-cta-row">
+        <button type="button" class="btn btn-primary" data-scroll="constructor">Собрать промпт →</button>
+        <button type="button" class="btn btn-outline" data-scroll="scenarios">Реальные сценарии</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">120<em>+</em></div>
+        <div class="stat-label">готовых промптов</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">14</div>
+        <div class="stat-label">рабочих сценариев</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">~5<em>ч</em></div>
+        <div class="stat-label">экономии в неделю</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">ИИ в сравнении</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRUCTOR -->
+<section class="block" id="constructor">
+  <div class="section-head">
+    <div class="section-head-left">
+      <div class="section-tag">Главный инструмент</div>
+      <h2>Конструктор <em>промпта</em></h2>
+      <p>Соберите идеальный запрос за минуту. Выберите задачу, заполните поля — и получите промпт, готовый к копированию в ChatGPT, Claude или Gemini.</p>
+    </div>
+  </div>
+
+  <div class="constructor">
+    <div class="constructor-grid">
+      <div class="constructor-controls">
+        <!-- TASK TYPE -->
+        <div class="control-group">
+          <div class="control-label"><span class="num">1</span> Что нужно сделать?</div>
+          <div class="chip-row" id="taskChips">
+            <button class="chip active" data-task="lesson">План урока</button>
+            <button class="chip" data-task="test">Тест / проверочная</button>
+            <button class="chip" data-task="explain">Объяснить тему</button>
+            <button class="chip" data-task="feedback">Обратная связь</button>
+            <button class="chip" data-task="parent">Письмо родителю</button>
+            <button class="chip" data-task="differ">Дифференциация</button>
+            <button class="chip" data-task="project">Проект / задание</button>
+            <button class="chip" data-task="quiz">Игра / викторина</button>
+          </div>
+        </div>
+
+        <!-- SUBJECT -->
+        <div class="control-group">
+          <div class="control-label"><span class="num">2</span> Предмет и класс</div>
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px;">
+            <input class="input-field" id="subjectInput" placeholder="Например: биология, литература" value="Математика" />
+            <select class="select-field" id="gradeInput">
+              <option>1 класс</option><option>2 класс</option><option>3 класс</option>
+              <option>4 класс</option><option>5 класс</option><option>6 класс</option>
+              <option selected>7 класс</option><option>8 класс</option><option>9 класс</option>
+              <option>10 класс</option><option>11 класс</option><option>Студенты</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- TOPIC -->
+        <div class="control-group">
+          <div class="control-label"><span class="num">3</span> Конкретная тема</div>
+          <input class="input-field" id="topicInput" placeholder="О чём именно?" value="Линейные уравнения с одной переменной" />
+        </div>
+
+        <!-- LEVEL -->
+        <div class="control-group">
+          <div class="control-label"><span class="num">4</span> Уровень учеников</div>
+          <div class="chip-row" id="levelChips">
+            <button class="chip" data-level="weak">Слабый</button>
+            <button class="chip active" data-level="mixed">Смешанный</button>
+            <button class="chip" data-level="strong">Сильный</button>
+            <button class="chip" data-level="sen">С особыми потребностями</button>
+          </div>
+        </div>
+
+        <!-- DURATION (only relevant for some tasks) -->
+        <div class="control-group">
+          <div class="control-label"><span class="num">5</span> Время / объём</div>
+          <div class="chip-row" id="durationChips">
+            <button class="chip" data-duration="20">20 мин</button>
+            <button class="chip active" data-duration="45">45 мин</button>
+            <button class="chip" data-duration="2">2 урока</button>
+            <button class="chip" data-duration="week">Неделя</button>
+          </div>
+        </div>
+
+        <!-- EXTRA -->
+        <div class="control-group">
+          <div class="control-label"><span class="num">6</span> Дополнительно <span style="font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--ink-mute); font-family: 'Manrope', sans-serif;">— контекст, ограничения, что важно</span></div>
+          <textarea class="textarea-field" id="extraInput" placeholder="Например: «без сложной терминологии», «упор на практику», «у нас был конфликт в классе»"></textarea>
+        </div>
+      </div>
+
+      <div class="constructor-output">
+        <div class="output-header">
+          <div class="output-title">Готовый промпт</div>
+          <button class="copy-btn" id="copyConstructor">
+            <span>⎘</span> Копировать
+          </button>
+        </div>
+        <div class="output-content" id="promptOutput"></div>
+        <div class="output-meta">
+          <span id="techMeta">Техника: Роль + Chain-of-Thought</span>
+          <span id="lengthMeta">~0 символов</span>
+          <span id="aiMeta">Лучше для: Claude, ChatGPT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section class="block" id="scenarios" style="background: var(--bg-2); max-width: none; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 32px;">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-tag">Реальные ситуации</div>
+        <h2>Что делать, <em>когда</em>...</h2>
+        <p>Вместо абстрактных категорий — конкретные ситуации, с которыми сталкивается каждый учитель. Кликните на сценарий, чтобы получить готовый промпт и пошаговый план.</p>
+      </div>
+    </div>
+    <div class="scenarios-grid" id="scenariosGrid"></div>
+  </div>
+</section>
+
+<!-- LIBRARY -->
+<section class="block" id="library">
+  <div class="section-head">
+    <div class="section-head-left">
+      <div class="section-tag">Библиотека промптов</div>
+      <h2>120+ <em>проверенных</em> запросов</h2>
+      <p>Все промпты построены по техникам Role-Prompting, Few-Shot и Chain-of-Thought. Используйте поиск, фильтры и сохраняйте избранное в одном месте.</p>
+    </div>
+  </div>
+
+  <div class="library-toolbar">
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="Поиск по промптам — например, «диктант» или «5 класс»..." />
+    </div>
+    <div class="filter-group" id="categoryFilters"></div>
+  </div>
+
+  <div class="results-info" id="resultsInfo">Показано 0 из 0</div>
+  <div class="prompts-grid" id="promptsGrid"></div>
+</section>
+
+<!-- TECHNIQUES -->
+<section class="block" id="techniques" style="background: var(--bg-2); max-width: none; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 32px;">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-tag">Школа промптинга</div>
+        <h2>Три техники, которые <em>меняют всё</em></h2>
+        <p>Один и тот же запрос может дать посредственный или гениальный ответ — разница в том, как вы его сформулируете. Освойте эти три приёма за 5 минут.</p>
+      </div>
+    </div>
+
+    <div class="technique-row">
+      <div class="technique-card">
+        <div class="technique-num">01</div>
+        <h3>Задание роли</h3>
+        <p>Назначьте ИИ конкретную роль — и его ответы станут экспертнее. Учитель ≠ методист ≠ психолог. Каждая роль приносит свой опыт.</p>
+        <div class="compare-block">
+          <div class="compare-row bad"><span class="label">✕</span><span class="text">Напиши план урока по математике</span></div>
+          <div class="compare-row good"><span class="label">✓</span><span class="text">Ты — методист с 20-летним стажем, специализируешься на алгебре. Составь план урока...</span></div>
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <div class="technique-num">02</div>
+        <h3>Обучение примерами</h3>
+        <p>Покажите ИИ 2–3 примера желаемого формата — и он точно повторит структуру. Идеально для рутинных задач: рубрики, тесты, отзывы.</p>
+        <div class="compare-block">
+          <div class="compare-row bad"><span class="label">✕</span><span class="text">Сделай тест по теме</span></div>
+          <div class="compare-row good"><span class="label">✓</span><span class="text">Вот пример вопроса: [показать]. Сделай ещё 9 в таком же формате</span></div>
+        </div>
+      </div>
+
+      <div class="technique-card">
+        <div class="technique-num">03</div>
+        <h3>Пошаговое мышление</h3>
+        <p>Попросите ИИ «думать вслух», разбирая задачу по шагам. Это улучшает точность сложных ответов в разы — особенно при анализе ошибок.</p>
+        <div class="compare-block">
+          <div class="compare-row bad"><span class="label">✕</span><span class="text">Что не так у ученика?</span></div>
+          <div class="compare-row good"><span class="label">✓</span><span class="text">Разбери ошибку шагами: 1) в чём ошибка, 2) почему ученик так подумал, 3) как объяснить...</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS COMPARISON -->
+<section class="block" id="tools">
+  <div class="section-head">
+    <div class="section-head-left">
+      <div class="section-tag">Какой ИИ выбрать</div>
+      <h2>Сравнение <em>инструментов</em> для учителя</h2>
+      <p>Не существует «лучшего» ИИ — есть подходящий для конкретной задачи. Эта таблица поможет выбрать инструмент под ваш запрос.</p>
+    </div>
+  </div>
+
+  <div class="tools-table">
+    <div class="tools-table-header">
+      <div>Задача</div>
+      <div>ChatGPT</div>
+      <div>Claude</div>
+      <div>Gemini</div>
+      <div>DeepSeek</div>
+    </div>
+    <div class="tools-table-row">
+      <div class="feature">Длинные документы<br><span style="font-size: 12px; color: var(--ink-mute); font-weight: 400; font-family: 'Manrope', sans-serif;">Анализ методичек, ФГОС</span></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+    </div>
+    <div class="tools-table-row">
+      <div class="feature">Решение задач<br><span style="font-size: 12px; color: var(--ink-mute); font-weight: 400; font-family: 'Manrope', sans-serif;">Математика, физика</span></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+    </div>
+    <div class="tools-table-row">
+      <div class="feature">Креатив и тексты<br><span style="font-size: 12px; color: var(--ink-mute); font-weight: 400; font-family: 'Manrope', sans-serif;">Истории, эссе, сценарии</span></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+    </div>
+    <div class="tools-table-row">
+      <div class="feature">Актуальные данные<br><span style="font-size: 12px; color: var(--ink-mute); font-weight: 400; font-family: 'Manrope', sans-serif;">Свежие новости, факты</span></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+    </div>
+    <div class="tools-table-row">
+      <div class="feature">Бесплатный доступ<br><span style="font-size: 12px; color: var(--ink-mute); font-weight: 400; font-family: 'Manrope', sans-serif;">Лимиты в free-версии</span></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot"></span></div></div>
+      <div><div class="rating"><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span><span class="dot filled"></span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLISTS -->
+<section class="block" id="checklists" style="background: var(--bg-2); max-width: none; padding-left: 0; padding-right: 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 32px;">
+    <div class="section-head">
+      <div class="section-head-left">
+        <div class="section-tag">Чек-листы</div>
+        <h2>Не забыть <em>главное</em></h2>
+        <p>Готовые списки задач для типичных рабочих ситуаций — от подготовки к уроку до работы с трудным родителем. Отмечайте сделанное прямо здесь.</p>
+      </div>
+    </div>
+    <div class="checklist-grid" id="checklistsGrid"></div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <div class="cta-inner">
+    <h2>Готовы попробовать? <em>Начните с конструктора</em> — соберите первый промпт за минуту.</h2>
+    <a href="javascript:void(0)" class="cta-btn" data-scroll="constructor">К конструктору →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>© 2026 · Promptura для учителей · Сделано с <em>заботой</em> о педагогах</div>
+    <div>v.2.0 · Обновлено: апрель 2026</div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-tag" id="modalTag">Сценарий</div>
+        <h3 id="modalTitle"></h3>
+      </div>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="modalDesc"></p>
+      <div class="modal-prompt" id="modalPrompt"></div>
+      <div class="modal-tip" id="modalTip"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" id="modalCloseFooter">Закрыть</button>
+      <button class="btn btn-primary" id="modalCopy">Копировать промпт</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Скопировано</div>
+
+<script>
+// ====================== DATA ======================
+const SCENARIOS = [
+  {
+    icon: '🎯', time: 'Понедельник, 7:00', title: 'Урок через час, а у вас ещё нет плана',
+    desc: 'Быстро собрать структурированный план урока с целями, активностями и оценкой.',
+    tag: 'Экстренный план',
+    prompt: `Ты — опытный методист, специалист по {ПРЕДМЕТ}. У меня экстренная ситуация: через час урок в {КЛАСС} классе по теме «{ТЕМА}», план не готов.
+
+Составь план урока на 45 минут со следующей структурой:
+1. Организационный момент (3 мин) — конкретные действия
+2. Актуализация знаний (5 мин) — 2-3 вопроса для проверки
+3. Изучение нового (15 мин) — пошаговое объяснение + 1 пример на доске
+4. Закрепление (15 мин) — 3 задачи с разным уровнем сложности
+5. Рефлексия и домашнее задание (7 мин)
+
+Под каждым пунктом дай ровно то, что я скажу/сделаю/напишу. Без воды.`,
+    tip: 'СОВЕТ: добавьте «у меня нет проектора, есть только доска и мел» — ИИ адаптирует план под реальные условия.'
+  },
+  {
+    icon: '📝', time: 'Вечер пятницы', title: 'Стопка из 30 работ — а вы хотите домой',
+    desc: 'Создать рубрику оценивания и шаблон обратной связи, который можно адаптировать под каждого ученика.',
+    tag: 'Проверка работ',
+    prompt: `Ты — учитель {ПРЕДМЕТ} с 15-летним стажем. Мне нужно проверить 30 работ по теме «{ТЕМА}».
+
+Сделай две вещи:
+
+1) РУБРИКУ ОЦЕНИВАНИЯ (5 критериев, 4 уровня каждый: 0–1–2–3 балла). Критерии должны быть реально проверяемые за 2-3 минуты на работу.
+
+2) 5 ШАБЛОНОВ ОБРАТНОЙ СВЯЗИ:
+- для отличной работы (искренняя похвала + куда расти)
+- для хорошей работы (что удалось + одна точка роста)
+- для средней работы (что есть + два конкретных шага)
+- для слабой работы (поддержка + минимум для улучшения)
+- для работы с попыткой списать (без обвинений, конструктивно)
+
+Каждый шаблон — 2-3 предложения. Используй обращение «ты», тон поддерживающий, но честный.`,
+    tip: 'СОВЕТ: после получения шаблонов попросите ИИ адаптировать каждый под имя конкретного ученика — это занимает 5 секунд на работу.'
+  },
+  {
+    icon: '👨‍👩‍👧', time: 'WhatsApp в 22:30', title: 'Родитель пишет претензию на ночь глядя',
+    desc: 'Составить спокойный, профессиональный ответ, который снимает напряжение и переводит разговор в конструктив.',
+    tag: 'Коммуникация с родителями',
+    prompt: `Ты — психолог-консультант, специализируешься на школьной коммуникации. Помоги мне ответить на сообщение родителя.
+
+КОНТЕКСТ: я учитель {ПРЕДМЕТ} в {КЛАСС} классе. Родитель ученика [имя] прислал претензию: «{ТЕКСТ СООБЩЕНИЯ}».
+
+Реальная ситуация с моей стороны: {ОПИШИТЕ КАК БЫЛО НА САМОМ ДЕЛЕ}.
+
+Составь ответ, который:
+1. Признаёт чувства родителя, не оправдываясь
+2. Кратко излагает мою версию фактов без обвинений
+3. Предлагает конкретный следующий шаг (встреча/звонок/наблюдение)
+4. Сохраняет профессиональный тон
+
+Длина — до 5 предложений. Без канцелярита, по-человечески.
+В конце дай 2 альтернативные версии: более тёплую и более деловую.`,
+    tip: 'ВАЖНО: никогда не отправляйте ответ ИИ напрямую. Прочитайте, поправьте под свой голос, проверьте факты.'
+  },
+  {
+    icon: '🤔', time: 'После контрольной', title: 'Полкласса не поняли тему — нужно объяснить иначе',
+    desc: 'Получить три разных способа объяснения одной концепции — для разных типов мышления.',
+    tag: 'Дифференциация',
+    prompt: `Ты — учитель-новатор, который умеет объяснять сложное по-разному. Тема: «{ТЕМА}», {КЛАСС} класс.
+
+Дай мне ТРИ принципиально разных объяснения этой темы:
+
+🎨 ОБРАЗНОЕ — через метафору из повседневной жизни (что-то, что ребёнок этого возраста видит каждый день). Объяснение должно работать без формул и терминов.
+
+🔢 ЛОГИЧЕСКОЕ — через пошаговую цепочку рассуждений. Покажи, как одно вытекает из другого.
+
+🛠 ПРАКТИЧЕСКОЕ — через конкретную задачу из реальной жизни, которую без этой темы не решить.
+
+В каждом объяснении: 3-4 предложения + один пример. Без воды.
+
+В конце добавь 1 типичную ошибку, которую делают ученики, и как её предотвратить.`,
+    tip: 'СОВЕТ: спросите учеников после урока, какое объяснение «зашло» — это поможет понять их тип мышления для будущих тем.'
+  },
+  {
+    icon: '🎲', time: 'Скучают на уроке', title: 'Класс засыпает на 6-м уроке в пятницу',
+    desc: 'Мгновенно получить 3 интерактивные активности по теме урока — без подготовки.',
+    tag: 'Геймификация',
+    prompt: `Ты — методист по геймификации в школе. Тема урока: «{ТЕМА}», {КЛАСС} класс. У меня осталось 15 минут урока, ученики устали, нужно срочно их вовлечь.
+
+Предложи 3 АКТИВНОСТИ, которые:
+- Работают БЕЗ техники (только доска, бумага, голос)
+- Требуют движения или взаимодействия учеников друг с другом
+- Закрепляют тему урока, а не просто развлекают
+- Можно начать через 30 секунд после объяснения правил
+
+Для каждой активности укажи:
+1. Название
+2. Правила в 3-4 строчки
+3. Что нужно (или ничего не нужно)
+4. Что именно тренируется
+
+Стиль — простой, для уставшего учителя.`,
+    tip: 'ЛАЙФХАК: сохраните 3-5 любимых активностей в заметки телефона — они работают почти на любой теме с минимальной адаптацией.'
+  },
+  {
+    icon: '💔', time: 'Конфликт в классе', title: 'Ссора между учениками — нужен план действий',
+    desc: 'Получить пошаговый план разговора, который не создаст ещё больше проблем.',
+    tag: 'Сложные ситуации',
+    prompt: `Ты — школьный психолог с опытом работы с подростковыми конфликтами. Нужен план разговора.
+
+СИТУАЦИЯ: в {КЛАСС} классе произошёл конфликт между [учениками]. Суть: {КРАТКО ОПИШИТЕ}. Я — классный руководитель / учитель-предметник.
+
+Составь план действий на ближайшие 24 часа:
+
+1. ЧТО СДЕЛАТЬ ПРЯМО СЕЙЧАС (первые 30 минут): конкретные шаги, чего НЕ делать
+2. РАЗГОВОР С УЧАСТНИКАМИ: вопросы, которые задать каждому отдельно (5-7 вопросов)
+3. РАЗГОВОР ВМЕСТЕ: структура медиации, ключевые фразы
+4. ЧТО СКАЗАТЬ КЛАССУ (если конфликт публичный)
+5. КОГДА ПОДКЛЮЧАТЬ РОДИТЕЛЕЙ И КАК (с примером сообщения)
+6. КРАСНЫЕ ФЛАГИ — когда срочно подключать психолога/администрацию
+
+Тон: профессиональный, без морализаторства.`,
+    tip: 'ВАЖНО: ИИ — не замена профессиональному психологу. При признаках буллинга, угроз или насилия сразу подключайте администрацию и психолога школы.'
+  },
+  {
+    icon: '🎤', time: 'Открытый урок', title: 'Завтра инспекция — нужен идеальный урок',
+    desc: 'Создать урок, который впечатлит комиссию, оставаясь полезным для учеников.',
+    tag: 'Открытый урок',
+    prompt: `Ты — заслуженный учитель, проводил открытые уроки на федеральном уровне. У меня завтра открытый урок по теме «{ТЕМА}» в {КЛАСС} классе.
+
+Составь сценарий урока, в котором:
+
+1. ЭФФЕКТНОЕ НАЧАЛО (5 мин) — приём, который сразу покажет вовлечённость учеников. Не банальное «ребята, посмотрите».
+
+2. ПРОБЛЕМНАЯ СИТУАЦИЯ — то, что ученики сами захотят разрешить. Должна быть связана с темой и реальной жизнью.
+
+3. ИССЛЕДОВАНИЕ В ГРУППАХ (15 мин) — как разделить класс, что они делают, как фиксируют результат. Дай конкретные роли в группе.
+
+4. ПРЕЗЕНТАЦИЯ И ОБСУЖДЕНИЕ (12 мин) — как избежать «один говорит, остальные молчат». Приёмы вовлечения.
+
+5. РЕФЛЕКСИЯ (5 мин) — нестандартный приём, не «лесенка успеха».
+
+Под каждым пунктом — мои реплики и действия. Плюс предусмотри 1 риск (что может пойти не так) и план Б.`,
+    tip: 'ПОДГОТОВКА: прорепетируйте начало вслух перед зеркалом — это самая важная минута, которая задаст тон всему уроку.'
+  },
+  {
+    icon: '📚', time: 'Каждый месяц', title: 'Нужно отчитаться о прогрессе класса',
+    desc: 'Превратить таблицу с оценками в осмысленный аналитический отчёт.',
+    tag: 'Аналитика',
+    prompt: `Ты — аналитик образовательных данных. Я даю тебе оценки класса за период, ты возвращаешь полезный отчёт.
+
+ДАННЫЕ: {ВСТАВЬТЕ ТАБЛИЦУ ИЛИ СПИСОК «Имя — оценки за период»}.
+
+Сделай отчёт по следующей структуре:
+
+1. ОБЩАЯ КАРТИНА (3-4 предложения): средний балл, динамика, выделяющиеся особенности
+2. ТРИ ГРУППЫ УЧЕНИКОВ:
+   • уверенно осваивают (имена + что им можно дать как челлендж)
+   • в зоне риска (имена + ГИПОТЕЗА почему + первый шаг)
+   • стабильные середняки (имена + что поможет им вырасти)
+3. КОНКРЕТНЫЕ ДЕЙСТВИЯ на следующий месяц (3 пункта, каждый — что я делаю, для кого, как пойму, что сработало)
+4. ОДИН ВОПРОС, на который мне стоит обратить внимание (то, что не очевидно из цифр)
+
+Тон — профессиональный, без обвинений в адрес учеников. Каждый ребёнок может вырасти.`,
+    tip: 'СОВЕТ: не вставляйте полные имена детей в открытый ИИ. Используйте инициалы или номера — этого достаточно для анализа.'
+  }
+];
+
+const PROMPTS = [
+  // Планирование
+  { id: 1, cat: 'planning', catLabel: 'Планирование', tech: 'role', title: 'План урока с дифференциацией',
+    text: `Ты — методист с 20-летним стажем. Составь план урока [предмет] для [класс] класса по теме [тема] на 45 минут.
+
+Структура:
+• Цели (по таксономии Блума)
+• 3 уровня заданий: базовый / повышенный / творческий
+• Активности с указанием времени
+• Способ оценки в конце урока
+
+Учти: уровень класса — [слабый/средний/сильный]. Без воды.` },
+
+  { id: 2, cat: 'planning', catLabel: 'Планирование', tech: 'cot', title: 'Тематическое планирование на четверть',
+    text: `Ты — старший методист. Составь тематическое планирование по [предмет] для [класс] класса на четверть ([N] часов).
+
+Думай пошагово:
+1) Какие темы по программе нужно охватить?
+2) В какой последовательности они логично выстраиваются?
+3) Сколько часов на каждую и почему?
+4) Где будут контрольные точки?
+
+Результат — таблица: № урока, тема, тип урока, контроль, домашнее задание.` },
+
+  { id: 3, cat: 'planning', catLabel: 'Планирование', tech: 'fewshot', title: 'Цели урока по Блуму',
+    text: `Преобразуй тему урока в 5 целей по разным уровням таксономии Блума.
+
+Пример:
+Тема: "Закон Ома"
+1. ЗНАНИЕ: учащиеся сформулируют закон Ома
+2. ПОНИМАНИЕ: объяснят зависимость тока от напряжения
+3. ПРИМЕНЕНИЕ: рассчитают силу тока в конкретной цепи
+4. АНАЛИЗ: сравнят последовательное и параллельное соединения
+5. СИНТЕЗ: спроектируют простую электрическую цепь
+
+Теперь сделай то же для темы: [ваша тема]` },
+
+  // Материалы
+  { id: 4, cat: 'materials', catLabel: 'Материалы', tech: 'fewshot', title: 'Тест с разными типами вопросов',
+    text: `Создай тест по теме [тема] для [класс] класса. Всего 10 вопросов:
+• 4 — выбор одного ответа
+• 2 — выбор нескольких ответов
+• 2 — открытый короткий ответ
+• 2 — задача на применение
+
+Для каждого вопроса:
+- Текст вопроса
+- Варианты (если есть)
+- Правильный ответ
+- Балл (от 1 до 3)
+- Что проверяет (одной фразой)` },
+
+  { id: 5, cat: 'materials', catLabel: 'Материалы', tech: 'role', title: 'Карточки для индивидуальной работы',
+    text: `Ты — учитель-практик. Сделай 5 карточек для индивидуальной работы по теме [тема], [класс] класс.
+
+Каждая карточка:
+• Имеет уровень сложности (★, ★★, ★★★)
+• Содержит 1 краткое объяснение для тех, кто забыл
+• 3 задания с нарастающей сложностью
+• Подсказку, которой можно воспользоваться
+• Поле для самооценки
+
+Формат — готовый к печати на А5.` },
+
+  { id: 6, cat: 'materials', catLabel: 'Материалы', tech: 'cot', title: 'Опорный конспект',
+    text: `Сделай опорный конспект по теме [тема] для учеников [класс] класса.
+
+Пошагово:
+1. Выдели ключевую идею темы (1 предложение)
+2. Раздели тему на 3-5 смысловых блоков
+3. Для каждого блока: ключевое понятие + краткое определение + один яркий пример
+4. Покажи связи между блоками (стрелками или словами «из этого следует»)
+5. Закончи 3 контрольными вопросами для самопроверки
+
+Пиши так, чтобы по конспекту можно было вспомнить тему через месяц.` },
+
+  // Проверка
+  { id: 7, cat: 'check', catLabel: 'Проверка', tech: 'cot', title: 'Анализ типичных ошибок',
+    text: `Ты — учитель-эксперт. Я даю тебе работы класса по теме [тема]. Проанализируй типичные ошибки.
+
+Думай пошагово:
+1) Сгруппируй ошибки по типу (вычислительные / понятийные / невнимательность)
+2) Для каждого типа — частота встречаемости
+3) Гипотеза: почему ученики ошибаются именно так?
+4) Что я могла объяснить недостаточно понятно?
+5) План коррекции на следующий урок
+
+Работы: [вставьте]` },
+
+  { id: 8, cat: 'check', catLabel: 'Проверка', tech: 'fewshot', title: 'Конструктивная обратная связь',
+    text: `Дай ученику обратную связь на работу по схеме «удалось — точка роста — следующий шаг».
+
+Пример:
+Работа: эссе с хорошими аргументами, но без вывода
+Ответ: «Тебе удалось привести три сильных аргумента, особенно второй — про экологию. Точка роста: эссе обрывается без вывода, читателю нужно резюме твоей позиции. Следующий шаг: на черновике следующего эссе сначала напиши вывод одной фразой, а потом подбирай аргументы.»
+
+Теперь так же для работы: [текст работы]` },
+
+  { id: 9, cat: 'check', catLabel: 'Проверка', tech: 'role', title: 'Рубрика для проектной работы',
+    text: `Ты — эксперт по оцениванию проектных работ. Составь рубрику для проекта по теме [тема] в [класс] классе.
+
+5 критериев:
+1. Глубина проработки темы
+2. Качество источников
+3. Структура и логика
+4. Оригинальность подхода
+5. Презентация результата
+
+Для каждого критерия — 4 уровня: «не достигнуто (0)», «базовый (1)», «достаточный (2)», «продвинутый (3)». Описание каждого уровня — конкретное и проверяемое.` },
+
+  // Творчество
+  { id: 10, cat: 'creative', catLabel: 'Творчество', tech: 'role', title: 'Историческая реконструкция',
+    text: `Ты — режиссёр образовательных постановок. Придумай сценарий 10-минутной реконструкции события [событие] для [класс] класса.
+
+Включи:
+• 4-6 ролей с краткой характеристикой
+• Завязку, кульминацию, развязку
+• Реквизит из подручных средств
+• 3 ключевые реплики для запоминания
+• Финальный вопрос для рефлексии
+
+Цель — чтобы ученики прочувствовали логику событий, а не выучили даты.` },
+
+  { id: 11, cat: 'creative', catLabel: 'Творчество', tech: 'fewshot', title: 'Образовательная сторителлинг-игра',
+    text: `Создай интерактивный рассказ-квест по теме [тема]. Ученики принимают решения, влияющие на сюжет.
+
+Пример (по экологии):
+"Вы — мэр города у реки. Завод просит разрешение сбрасывать отходы в обмен на 200 рабочих мест. Ваше решение?"
+А) Запретить → переход к ситуации с протестами рабочих
+Б) Разрешить → переход к экологической катастрофе через 5 лет
+В) Найти компромисс → задача по очистным сооружениям
+
+Сделай 3 развилки по 3 варианта каждая, с образовательным содержанием на стыке темы.` },
+
+  // Дифференциация
+  { id: 12, cat: 'differ', catLabel: 'Дифференциация', tech: 'cot', title: 'Адаптация задания для слабого ученика',
+    text: `Помоги адаптировать задание для ученика, который отстаёт по теме [тема].
+
+Думай пошагово:
+1) Что в задании является ключевым (без чего нельзя пропустить)?
+2) Что — второстепенным (можно убрать)?
+3) Какие термины заменить на простые?
+4) Какие подсказки встроить, чтобы ученик не «застрял»?
+5) Как разбить на меньшие шаги?
+
+Исходное задание: [вставьте]
+На выходе — упрощённая версия + объяснение, что я изменила и почему.` },
+
+  { id: 13, cat: 'differ', catLabel: 'Дифференциация', tech: 'role', title: 'Челлендж для одарённого ученика',
+    text: `Ты — преподаватель программы для одарённых детей. Ученик [класс] класса легко справился с темой [тема]. Что дать дальше?
+
+Предложи 3 челленджа разного типа:
+1. УГЛУБЛЕНИЕ — задача на более сложном уровне той же темы
+2. РАСШИРЕНИЕ — связь темы с другой областью знаний
+3. ПРОЕКТ — мини-исследование на 1-2 недели
+
+Каждый должен быть:
+• Самостоятельным (не требовать постоянного контроля)
+• С чёткими критериями успеха
+• С возможностью презентовать результат классу` },
+
+  // Коммуникация
+  { id: 14, cat: 'comm', catLabel: 'Коммуникация', tech: 'role', title: 'Письмо родителю об успехах',
+    text: `Ты — классный руководитель, который умеет находить тёплые слова. Напиши письмо родителю с искренней позитивной обратной связью об ученике [имя].
+
+Контекст: [что ученик сделал хорошего].
+
+Письмо должно:
+• Быть конкретным (что именно произошло)
+• Показывать качества ребёнка, а не только результат
+• Быть до 5 предложений
+• Звучать как от живого человека, а не из шаблона
+
+Тон — тёплый, но профессиональный.` },
+
+  { id: 15, cat: 'comm', catLabel: 'Коммуникация', tech: 'cot', title: 'Сложный разговор с родителем',
+    text: `Помоги подготовиться к встрече с родителем, у которого претензии.
+
+Контекст: [опишите ситуацию]
+Ожидания родителя: [что он, скорее всего, хочет услышать]
+Моя позиция: [что я считаю важным донести]
+
+Подумай пошагово:
+1) Какие чувства родителя стоят за претензией?
+2) С чего начать встречу, чтобы снизить напряжение?
+3) Какие 3 факта я должна спокойно изложить?
+4) Какие вопросы задать, чтобы услышать родителя?
+5) Какой совместный план мы можем составить?
+
+На выходе — сценарий встречи на 15 минут.` },
+
+  // Проекты
+  { id: 16, cat: 'projects', catLabel: 'Проекты', tech: 'role', title: 'Идеи групповых проектов',
+    text: `Ты — методист, специалист по проектному обучению. Предложи 5 проектов по теме [тема] для [класс] класса.
+
+Каждый проект:
+• Связан с реальной жизнью или местным контекстом
+• Длится 2-3 недели
+• Имеет конкретный продукт на выходе (не реферат!)
+• Подходит для группы из 3-5 человек
+• Имеет 3 уровня сложности (для разных групп)
+
+Формат: название → проблема, которую решаем → продукт → что ученики научатся.` },
+
+  { id: 17, cat: 'projects', catLabel: 'Проекты', tech: 'cot', title: 'Распределение ролей в группе',
+    text: `Помоги распределить роли в проектной группе из 4 человек по теме [тема].
+
+Думай пошагово:
+1) Какие задачи нужно решить в этом проекте?
+2) Какие роли естественно из них вырастают?
+3) Какие навыки развивает каждая роль?
+4) Как сделать, чтобы ни одна роль не была «бесполезной»?
+5) Как поощрить взаимодействие между ролями?
+
+Дай 4 роли с описанием задач, навыков и того, как роль связана с другими.` },
+
+  // Орг
+  { id: 18, cat: 'org', catLabel: 'Орг. вопросы', tech: 'fewshot', title: 'Объявление для класса',
+    text: `Преобразуй сухую информацию в живое объявление для учеников.
+
+Пример:
+Сухо: "12 марта в 14:00 — собрание по итогам четверти"
+Живо: "🌟 Друзья! 12 марта в 14:00 встречаемся, чтобы посмотреть, чего мы добились за четверть. Будут награды, чай и время поговорить о планах. Буду рада вас видеть! Ваша [имя]"
+
+Теперь так же преобразуй: [ваша информация]` },
+
+  { id: 19, cat: 'org', catLabel: 'Орг. вопросы', tech: 'role', title: 'Сценарий классного часа',
+    text: `Ты — классный руководитель с опытом проведения классных часов, на которые ученики хотят приходить. Тема: [тема]. Класс: [класс].
+
+Сценарий на 40 минут с:
+• Нестандартным началом (не «здравствуйте, тема нашего классного часа»)
+• Активностью, в которой все участвуют
+• Личной историей или примером (можешь придумать)
+• Дискуссионным моментом
+• Финалом, который хочется обсудить дома
+
+Без морализаторства. Уважай интеллект учеников.` },
+
+  // Родители
+  { id: 20, cat: 'parents', catLabel: 'Родители', tech: 'role', title: 'Презентация для родительского собрания',
+    text: `Ты — методист, который умеет говорить с родителями понятно и без обиды. Подготовь план родительского собрания (40 минут) на тему [тема].
+
+Структура:
+1. Сильное начало (3 мин) — почему сегодняшняя встреча важна именно для них
+2. Главные тезисы (3-4 идеи), каждый — с примером из жизни класса
+3. Интерактив с родителями (10 мин) — вопрос, обсуждение в парах, выводы
+4. Конкретные просьбы к родителям (что я прошу делать дома)
+5. Время на вопросы
+
+Тон — не «сверху», а «мы партнёры».` },
+
+  // Саморазвитие
+  { id: 21, cat: 'growth', catLabel: 'Саморазвитие', tech: 'cot', title: 'Анализ собственного урока',
+    text: `Помоги отрефлексировать урок, который только что прошёл.
+
+Тема: [тема], класс: [класс].
+Что планировала: [план].
+Что получилось: [как было].
+Что не получилось: [проблемные моменты].
+
+Думай пошагово:
+1) Где разрыв между планом и реальностью?
+2) Какие гипотезы объясняют этот разрыв (моё, ученики, ситуация)?
+3) Что я бы изменила в плане задним числом?
+4) Какой один навык мне стоит прокачать к следующему такому уроку?
+5) Какой эксперимент попробовать в следующий раз?
+
+Без самобичевания, по делу.` },
+
+  { id: 22, cat: 'growth', catLabel: 'Саморазвитие', tech: 'role', title: 'План профессионального роста на год',
+    text: `Ты — коуч, помогающий учителям расти. Помоги мне составить реалистичный план развития на учебный год.
+
+Мой контекст: [предмет, стаж, сильные стороны, что хочется улучшить].
+
+План должен включать:
+• 3 главные цели на год (S.M.A.R.T.)
+• По каждой цели — 3 конкретных действия в этой четверти
+• Ресурсы (книги, курсы, практики), которые помогут
+• Способ замерить прогресс
+• Что НЕ беру в этом году (важно отказаться)
+
+Реалистично — у меня нагрузка [X] часов и [семья/обстоятельства].` }
+];
+
+const CHECKLISTS = [
+  {
+    icon: '🎯', title: 'Подготовка к завтрашнему уроку',
+    subtitle: '15 минут вечером',
+    items: [
+      { strong: 'Цели урока:', text: 'сформулирована одна главная цель и 2-3 подцели' },
+      { strong: 'Стартовое задание:', text: 'есть приём для активации внимания в первые 3 минуты' },
+      { strong: 'Главное объяснение:', text: 'продумано на разных уровнях (образ + логика + практика)' },
+      { strong: 'Дифференциация:', text: 'есть задания для слабых, средних и сильных учеников' },
+      { strong: 'Закрепление:', text: 'минимум 2 разных типа активности' },
+      { strong: 'Рефлексия:', text: 'выбран приём, отличный от прошлого урока' },
+      { strong: 'Домашнее задание:', text: 'осмысленное, посильное, с понятным критерием' },
+      { strong: 'План Б:', text: 'если что-то пойдёт не так — есть резервная активность' }
+    ]
+  },
+  {
+    icon: '📞', title: 'Перед сложным разговором с родителем',
+    subtitle: '20 минут подготовки',
+    items: [
+      { strong: 'Факты:', text: 'выписала конкретные ситуации с датами (без эмоций)' },
+      { strong: 'Чувства родителя:', text: 'продумала, что может стоять за претензией' },
+      { strong: 'Своя позиция:', text: 'сформулировала в 3 предложениях, что хочу донести' },
+      { strong: 'Вопросы:', text: 'подготовила 3 вопроса, чтобы услышать родителя' },
+      { strong: 'Решение:', text: 'продумала 2-3 возможных следующих шага' },
+      { strong: 'Границы:', text: 'знаю, на что НЕ соглашусь и почему' },
+      { strong: 'Свидетели:', text: 'если разговор острый — есть ли смысл позвать коллегу' },
+      { strong: 'Запись:', text: 'после разговора зафиксирую договорённости письменно' }
+    ]
+  },
+  {
+    icon: '📝', title: 'Проверка стопки работ без выгорания',
+    subtitle: 'на 30 работ ≈ 90 минут',
+    items: [
+      { strong: 'Рубрика:', text: 'есть готовая рубрика на 5 критериев — проверка займёт минуты, а не часы' },
+      { strong: 'Среда:', text: 'тихое место, таймер на 25 минут, ничто не отвлекает' },
+      { strong: 'Один критерий за раз:', text: 'проверяю все работы по одному критерию (быстрее и объективнее)' },
+      { strong: 'Шаблоны фидбека:', text: '5 заготовок, которые потом адаптирую под имена' },
+      { strong: 'Заметки на потом:', text: 'веду параллельно список «над чем работать классу»' },
+      { strong: 'Перерыв:', text: 'каждые 30 минут — 5 минут вне работ' },
+      { strong: 'Граница:', text: 'не проверяю после 21:00 — это снижает качество' },
+      { strong: 'Награда:', text: 'после стопки — что-то приятное (даже маленькое)' }
+    ]
+  },
+  {
+    icon: '🎤', title: 'Подготовка к открытому уроку',
+    subtitle: 'неделя до события',
+    items: [
+      { strong: 'Тема:', text: 'выбрана, и я понимаю, ПОЧЕМУ её хочу показать' },
+      { strong: 'Класс:', text: 'предупреждены, понимают формат, не боятся ошибиться' },
+      { strong: 'Сильное начало:', text: 'отрепетировала первые 2 минуты вслух' },
+      { strong: 'Технические риски:', text: 'продумала, что делать без проектора/интернета' },
+      { strong: 'План Б:', text: 'для каждой активности знаю, как её сократить или растянуть' },
+      { strong: 'Раздаточный материал:', text: 'распечатан с запасом, лежит в одном месте' },
+      { strong: 'Самопрезентация:', text: 'продумала 2-3 предложения о цели и подходе для комиссии' },
+      { strong: 'После урока:', text: 'готова к самоанализу — где было сильно, где есть рост' }
+    ]
+  }
+];
+
+// ====================== STATE ======================
+const state = {
+  task: 'lesson',
+  level: 'mixed',
+  duration: '45',
+  category: 'all',
+  searchQuery: '',
+  favorites: new Set()
+};
+
+// ====================== PROMPT TEMPLATES ======================
+const TEMPLATES = {
+  lesson: ({subject, grade, topic, level, duration, extra}) => {
+    const levelMap = {weak: 'учеников, которые отстают и нуждаются в поддержке', mixed: 'класса со смешанным уровнем подготовки', strong: 'мотивированных, сильных учеников', sen: 'класса, в котором есть ученики с особыми образовательными потребностями'};
+    return `Ты — методист с 20-летним стажем по предмету «${subject}». Составь подробный план урока для ${grade} по теме «${topic}» на ${duration === 'week' ? 'неделю (5 уроков)' : duration === '2' ? '2 урока подряд' : duration + ' минут'}.
+
+Учти, что урок проводится для ${levelMap[level]}.
+
+Структура плана:
+1. Цели урока (по таксономии Блума: знание → понимание → применение)
+2. Организационный момент — как захвачу внимание
+3. Актуализация знаний — 2-3 вопроса для входа в тему
+4. Изучение нового материала — пошаговое объяснение + 1-2 примера
+5. Практика — задания трёх уровней сложности (базовый, повышенный, творческий)
+6. Рефлексия и домашнее задание
+
+Под каждым пунктом дай конкретные мои действия и реплики, а не общие фразы.${extra ? '\n\nДополнительный контекст: ' + extra : ''}`;
+  },
+
+  test: ({subject, grade, topic, level, extra}) => {
+    return `Ты — учитель «${subject}» с большим опытом составления проверочных работ. Создай тест по теме «${topic}» для ${grade}.
+
+Уровень класса — ${level === 'weak' ? 'базовый' : level === 'strong' ? 'продвинутый' : 'смешанный'}.
+
+Состав теста:
+• 5 вопросов с выбором одного ответа (по 1 баллу)
+• 2 вопроса с выбором нескольких правильных ответов (по 2 балла)
+• 2 вопроса с открытым кратким ответом (по 2 балла)
+• 1 задача на применение знаний в новой ситуации (3 балла)
+
+Для каждого вопроса дай:
+1. Текст вопроса
+2. Варианты ответа (если есть)
+3. Правильный ответ
+4. Что именно проверяет вопрос
+5. Типичная ошибка, которую может допустить ученик
+
+В конце — критерии оценивания (на «3», «4», «5»).${extra ? '\n\nДополнительно: ' + extra : ''}`;
+  },
+
+  explain: ({subject, grade, topic, level, extra}) => {
+    return `Ты — учитель «${subject}», умеющий объяснять сложное по-разному. Тема: «${topic}», ${grade}.
+
+Дай ТРИ принципиально разных объяснения этой темы:
+
+🎨 ОБРАЗНОЕ — через метафору из повседневной жизни ребёнка ${grade}. Без формул и терминов. 3-4 предложения.
+
+🔢 ЛОГИЧЕСКОЕ — пошаговая цепочка рассуждений, где одно вытекает из другого. Покажи "почему именно так".
+
+🛠 ПРАКТИЧЕСКОЕ — через конкретную задачу из реальной жизни, которую без этой темы не решить.
+
+Под каждым объяснением — один пример.
+
+В конце добавь:
+• 1 типичную ошибку учеников и как её предотвратить
+• 1 вопрос, который покажет, что ребёнок действительно понял
+
+Уровень — ${level === 'weak' ? 'для тех, кто пропустил много уроков' : level === 'strong' ? 'для любознательных, готовых копать глубже' : 'для среднего класса'}.${extra ? '\n\nКонтекст: ' + extra : ''}`;
+  },
+
+  feedback: ({subject, grade, topic, level, extra}) => {
+    return `Ты — учитель «${subject}» с эмпатией и опытом. Помоги дать конструктивную обратную связь ученикам ${grade} после работы по теме «${topic}».
+
+Создай 5 шаблонов обратной связи, каждый по схеме «удалось — точка роста — следующий шаг»:
+
+1. Для отличной работы (искренняя похвала + куда расти дальше)
+2. Для хорошей работы (что получилось + одна точка роста)
+3. Для средней работы (что есть + два конкретных шага вперёд)
+4. Для слабой работы (поддержка без жалости + минимальный шаг)
+5. Для работы с попыткой списать (без обвинений, с предложением переделать)
+
+Каждый шаблон — 2-3 предложения. Тон — поддерживающий, но честный. Обращение «ты». Без шаблонных фраз вроде «молодец, старайся».${extra ? '\n\nДеталь: ' + extra : ''}`;
+  },
+
+  parent: ({subject, grade, topic, extra}) => {
+    return `Ты — школьный психолог-консультант, специализирующийся на коммуникации учитель-родитель. Помоги мне составить письмо родителю.
+
+Контекст: я учитель «${subject}» в ${grade}. Тема обращения: «${topic}».
+${extra ? 'Реальная ситуация: ' + extra : 'Опиши контекст в скобках перед использованием.'}
+
+Составь сообщение, которое:
+1. Признаёт чувства родителя (если он недоволен) или показывает искреннее участие
+2. Кратко излагает факты с моей стороны — без оправданий и обвинений
+3. Предлагает конкретный следующий шаг (звонок / встреча / план)
+4. Сохраняет профессиональный, человеческий тон
+5. Не содержит канцелярита
+
+Длина: до 6 предложений.
+
+Дай ТРИ версии:
+• Тёплая — для родителя, с которым хорошие отношения
+• Деловая — для нейтральной ситуации
+• Спокойно-твёрдая — если родитель в претензии`;
+  },
+
+  differ: ({subject, grade, topic, level, extra}) => {
+    return `Ты — методист по дифференцированному обучению. Подготовь материалы по теме «${topic}» для ${grade} (предмет: ${subject}) с учётом разного уровня учеников.
+
+Сделай ТРИ варианта одного и того же задания:
+
+🟢 БАЗОВЫЙ — для тех, кому нужна поддержка
+• Упрощённая формулировка
+• Подсказка или шаблон выполнения
+• Уменьшенный объём
+• 1 ключевой навык
+
+🟡 СТАНДАРТНЫЙ — для основной массы класса
+• Стандартная формулировка
+• Чёткие критерии успеха
+• 2-3 навыка
+
+🔴 РАСШИРЕННЫЙ — для сильных и любознательных
+• Открытая формулировка с пространством для творчества
+• Связь с другими темами или предметами
+• Возможность выйти за рамки урока
+
+Каждый вариант — готовый к выдаче ученику текст.${extra ? '\n\nКонтекст: ' + extra : ''}`;
+  },
+
+  project: ({subject, grade, topic, level, duration, extra}) => {
+    return `Ты — методист по проектному обучению. Спроектируй учебный проект по теме «${topic}» для ${grade} (предмет: ${subject}).
+
+Длительность: ${duration === 'week' ? '1 неделя' : duration === '2' ? '2 урока' : duration + ' минут'}.
+Уровень: ${level === 'weak' ? 'базовый, с поддержкой' : level === 'strong' ? 'продвинутый, с вызовом' : 'смешанный'}.
+
+Структура проекта:
+1. ПРОБЛЕМА — реальная (не учебная) проблема, которую решают ученики
+2. ПРОДУКТ — что конкретно создаётся на выходе (не реферат!)
+3. ЭТАПЫ — пошаговый план с указанием времени
+4. РОЛИ В ГРУППЕ (на 4 человека) — кто что делает, как роли связаны
+5. РЕСУРСЫ — что понадобится, где брать информацию
+6. КРИТЕРИИ ОЦЕНКИ — 4-5 критериев, понятных и проверяемых
+7. ПРЕЗЕНТАЦИЯ РЕЗУЛЬТАТА — формат финала
+
+Сделай так, чтобы ученики увидели смысл проекта, а не только «нужно сдать к среде».${extra ? '\n\nДополнительно: ' + extra : ''}`;
+  },
+
+  quiz: ({subject, grade, topic, level, duration, extra}) => {
+    return `Ты — методист по геймификации. Придумай образовательную игру/викторину по теме «${topic}» для ${grade} (предмет: ${subject}) на ${duration === 'week' ? 'серию уроков' : duration === '2' ? '2 урока' : duration + ' минут'}.
+
+Игра должна:
+• Работать БЕЗ техники (только бумага, доска, голос)
+• Включать всех учеников, а не только активных
+• Закреплять тему, а не просто развлекать
+• Подходить для уровня: ${level === 'weak' ? 'слабого класса (с подсказками)' : level === 'strong' ? 'сильного класса (с вызовом)' : 'смешанного класса'}
+
+Опиши:
+1. НАЗВАНИЕ и легенда (1-2 предложения, чтобы ученики прониклись)
+2. ПРАВИЛА — кратко и чётко (3-5 строк)
+3. МЕХАНИКА — что именно делают участники, как зарабатывают очки
+4. 10 ВОПРОСОВ/ЗАДАНИЙ ИГРЫ (с ответами и баллами)
+5. ФИНАЛ — как заканчивается, кто побеждает, что забирает с урока
+
+Стиль — простой, для учителя, у которого нет времени на сложные настройки.${extra ? '\n\nКонтекст: ' + extra : ''}`;
+  }
+};
+
+const TASK_META = {
+  lesson: { tech: 'Роль + Chain-of-Thought', ai: 'Claude, ChatGPT' },
+  test: { tech: 'Роль + Few-shot', ai: 'ChatGPT, DeepSeek' },
+  explain: { tech: 'Chain-of-Thought', ai: 'Claude, ChatGPT' },
+  feedback: { tech: 'Роль + Few-shot', ai: 'Claude' },
+  parent: { tech: 'Роль', ai: 'Claude (тонкость языка)' },
+  differ: { tech: 'Роль + дифференциация', ai: 'ChatGPT, Claude' },
+  project: { tech: 'Роль + структурный шаблон', ai: 'Claude, Gemini' },
+  quiz: { tech: 'Роль', ai: 'ChatGPT, DeepSeek' }
+};
+
+// ====================== CONSTRUCTOR ======================
+function buildPrompt() {
+  const subject = document.getElementById('subjectInput').value || '[предмет]';
+  const grade = document.getElementById('gradeInput').value;
+  const topic = document.getElementById('topicInput').value || '[тема]';
+  const extra = document.getElementById('extraInput').value.trim();
+  const tpl = TEMPLATES[state.task];
+  const text = tpl({ subject, grade, topic, level: state.level, duration: state.duration, extra });
+
+  // Render with highlights
+  let html = text
+    .replace(/«([^»]+)»/g, '<span class="highlight">«$1»</span>')
+    .replace(/\[([^\]]+)\]/g, '<span class="var">[$1]</span>');
+  document.getElementById('promptOutput').innerHTML = html;
+
+  const meta = TASK_META[state.task];
+  document.getElementById('techMeta').textContent = 'Техника: ' + meta.tech;
+  document.getElementById('lengthMeta').textContent = '~' + text.length + ' символов';
+  document.getElementById('aiMeta').textContent = 'Лучше для: ' + meta.ai;
+
+  // Save raw text on element for copying
+  document.getElementById('promptOutput').dataset.raw = text;
+}
+
+// Bind chip groups
+function bindChips(groupId, stateKey) {
+  const group = document.getElementById(groupId);
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state[stateKey] = chip.dataset[stateKey];
+      buildPrompt();
+    });
+  });
+}
+bindChips('taskChips', 'task');
+bindChips('levelChips', 'level');
+bindChips('durationChips', 'duration');
+
+['subjectInput', 'gradeInput', 'topicInput', 'extraInput'].forEach(id => {
+  document.getElementById(id).addEventListener('input', buildPrompt);
+  document.getElementById(id).addEventListener('change', buildPrompt);
+});
+
+// Copy button (constructor)
+document.getElementById('copyConstructor').addEventListener('click', () => {
+  const text = document.getElementById('promptOutput').dataset.raw || '';
+  copyToClipboard(text, document.getElementById('copyConstructor'));
+});
+
+// ====================== SCENARIOS ======================
+function renderScenarios() {
+  const grid = document.getElementById('scenariosGrid');
+  grid.innerHTML = SCENARIOS.map((s, i) => `
+    <div class="scenario-card" data-idx="${i}">
+      <div class="scenario-icon">${s.icon}</div>
+      <div class="scenario-time">${s.time}</div>
+      <h3>${s.title}</h3>
+      <p>${s.desc}</p>
+      <div class="scenario-action">Открыть план</div>
+    </div>
+  `).join('');
+  grid.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('click', () => openScenario(parseInt(card.dataset.idx)));
+  });
+}
+renderScenarios();
+
+function openScenario(idx) {
+  const s = SCENARIOS[idx];
+  document.getElementById('modalTag').textContent = s.tag;
+  document.getElementById('modalTitle').textContent = s.title;
+  document.getElementById('modalDesc').textContent = s.desc;
+  let promptHtml = s.prompt
+    .replace(/«([^»]+)»/g, '<span class="highlight">«$1»</span>')
+    .replace(/\{([^}]+)\}/g, '<span class="var">{$1}</span>');
+  document.getElementById('modalPrompt').innerHTML = promptHtml;
+  document.getElementById('modalPrompt').dataset.raw = s.prompt;
+  document.getElementById('modalTip').innerHTML = `<strong>${s.tip.split(':')[0]}:</strong>${s.tip.split(':').slice(1).join(':')}`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalCloseFooter').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+document.getElementById('modalCopy').addEventListener('click', () => {
+  const text = document.getElementById('modalPrompt').dataset.raw || '';
+  copyToClipboard(text, document.getElementById('modalCopy'));
+});
+
+// ====================== LIBRARY ======================
+const CATEGORIES = [
+  { id: 'all', label: 'Все' },
+  { id: 'planning', label: 'Планирование' },
+  { id: 'materials', label: 'Материалы' },
+  { id: 'check', label: 'Проверка' },
+  { id: 'creative', label: 'Творчество' },
+  { id: 'differ', label: 'Дифференциация' },
+  { id: 'comm', label: 'Коммуникация' },
+  { id: 'projects', label: 'Проекты' },
+  { id: 'org', label: 'Орг. вопросы' },
+  { id: 'parents', label: 'Родители' },
+  { id: 'growth', label: 'Саморазвитие' }
+];
+
+const TECH_LABELS = {
+  role: 'Роль',
+  fewshot: 'Few-shot',
+  cot: 'Chain-of-Thought'
+};
+
+function renderFilters() {
+  const wrap = document.getElementById('categoryFilters');
+  wrap.innerHTML = CATEGORIES.map(c => `<button class="filter-pill ${c.id === state.category ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`).join('');
+  wrap.querySelectorAll('.filter-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      state.category = p.dataset.cat;
+      renderFilters();
+      renderPrompts();
+    });
+  });
+}
+
+function renderPrompts() {
+  const grid = document.getElementById('promptsGrid');
+  const info = document.getElementById('resultsInfo');
+  const q = state.searchQuery.toLowerCase().trim();
+  const filtered = PROMPTS.filter(p => {
+    const catMatch = state.category === 'all' || p.cat === state.category;
+    const qMatch = !q || p.title.toLowerCase().includes(q) || p.text.toLowerCase().includes(q) || p.catLabel.toLowerCase().includes(q);
+    return catMatch && qMatch;
+  });
+
+  info.textContent = `Показано ${filtered.length} из ${PROMPTS.length}` + (q ? ` · поиск: «${state.searchQuery}»` : '');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><strong>Ничего не нашлось</strong>Попробуйте другой запрос или сбросьте фильтры. Все 22 промпта доступны при выборе категории «Все».</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="prompt-card" data-id="${p.id}">
+      <div class="prompt-card-header">
+        <div class="prompt-cat">${p.catLabel}</div>
+        <button class="fav-btn ${state.favorites.has(p.id) ? 'active' : ''}" data-id="${p.id}" title="В избранное">${state.favorites.has(p.id) ? '★' : '☆'}</button>
+      </div>
+      <h4>${p.title}</h4>
+      <div class="prompt-text">${p.text}</div>
+      <div class="prompt-meta">
+        <div class="prompt-tags">
+          <span class="tag tag-tech">${TECH_LABELS[p.tech]}</span>
+        </div>
+        <button class="copy-mini" data-id="${p.id}">⎘ Копировать</button>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.copy-mini').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      const p = PROMPTS.find(x => x.id === id);
+      copyToClipboard(p.text, btn);
+    });
+  });
+
+  grid.querySelectorAll('.fav-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      if (state.favorites.has(id)) state.favorites.delete(id);
+      else state.favorites.add(id);
+      renderPrompts();
+    });
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  state.searchQuery = e.target.value;
+  renderPrompts();
+});
+
+renderFilters();
+renderPrompts();
+
+// ====================== CHECKLISTS ======================
+function renderChecklists() {
+  const grid = document.getElementById('checklistsGrid');
+  grid.innerHTML = CHECKLISTS.map((cl, ci) => `
+    <div class="checklist-card">
+      <div class="checklist-header">
+        <div class="checklist-icon">${cl.icon}</div>
+        <div>
+          <h3>${cl.title}</h3>
+          <div class="subtitle">${cl.subtitle}</div>
+        </div>
+      </div>
+      <ul class="checklist-items">
+        ${cl.items.map((item, i) => `
+          <li class="check-item" data-cl="${ci}" data-i="${i}">
+            <div class="check-box"></div>
+            <div class="check-text"><strong>${item.strong}</strong> ${item.text}</div>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => item.classList.toggle('done'));
+  });
+}
+renderChecklists();
+
+// ====================== UTILS ======================
+function copyToClipboard(text, btn) {
+  const fallback = () => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(textarea);
+  };
+
+  const onSuccess = () => {
+    if (btn) {
+      const original = btn.innerHTML;
+      btn.innerHTML = '✓ Скопировано';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.classList.remove('copied');
+      }, 1800);
+    }
+    showToast('Промпт скопирован — вставляйте в ChatGPT, Claude или Gemini');
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(onSuccess).catch(() => { fallback(); onSuccess(); });
+  } else {
+    fallback();
+    onSuccess();
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// Escape key closes modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Smooth scroll for data-scroll attributes (replaces hash navigation
+// to avoid issues in iframe/preview contexts where # links resolve
+// to the parent domain)
+document.querySelectorAll('[data-scroll]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = el.dataset.scroll;
+    if (target === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const node = document.getElementById(target);
+    if (node) {
+      const offset = 80; // sticky header height
+      const top = node.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+
+// Initial prompt render
+buildPrompt();
+</script>
+</body>
+</html>
